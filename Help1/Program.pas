@@ -1,4 +1,6 @@
 ﻿Program blablabla; //Проверено на 18 и 26(пример), 18 и -26, 18 и 18. 
+uses
+  CRT;
 var
   n:boolean;
   A,B,k,i,ShiftCount:integer;
@@ -143,6 +145,22 @@ begin
   operand1[operand1.Length-1]:=0;
 end;
 
+{
+Переводим массив в строку для вывода
+}
+function masToString(arr:array of integer):string;
+var
+  str:string;
+begin
+  for var i:=0 to arr.Length-1 do
+    str:= str + arr[i];
+  masToString:=str;
+end;
+{
+
+НАЧАЛО ПРОГРАММЫ
+
+}
 begin
   write('Введите делимое: ');
   readln(A);
@@ -158,15 +176,21 @@ begin
   mokB:= mok(pkB);
   mdkA:= mdk(mokA);
   mdkB:= mdk(mokB);
-  writeln('ПК А =', pkA);
-  writeln('ПК B =', pkB);
-//  writeln('МОК А =', mokA);
-  writeln('МОК B =', mokB);
-//  writeln('МДК А =', mdkA);
-  writeln('МДК B =', mdkB);
-
+  writeln('___________________________');
+  writeln('Входные данные: ');
+  writeln('ПК А  =', masToString(pkA));
+  writeln('ПК B  =', masToString(pkB));
+  writeln('МОК B =', masToString(mokB));
+  writeln('МДК B =', masToString(mdkB));
+  writeln('___________________________');
+  writeln('Для начала вычислений, нажмите любую клавишу: ');
+  CRT.ReadKey();
+//  CRT.ClrScr();
 // пока не будет обнаружено переполнение
 operand:= pkA.slice(0,1);
+writeln('  ',masToString(pkA),' ПК А');
+writeln('+ ',masToString(pkB),' МДК');
+writeln('___________________________');
 sum(operand,mdkB);
 k:=1;
 while k<=pkA.length do 
@@ -175,33 +199,39 @@ while k<=pkA.length do
       
       if(operand[0] = 0) then
       begin
+        writeln('  ',masToString(operand),' ОСТ > 0, прибавляем 1 к результату');
         res[k-1]:=1;
         shift(operand);
+        writeln('  ',masToString(operand), '<- СДВИГ ');
         ShiftCount:=ShiftCount+1;
-//        if ((operand[0] = 1)and(operand[1] = 0)) or 
-//        ((operand[0] = 0)and(operand[1] = 1)) then
-//        begin
-//          sum(operand,mdkB);
-//          break;
-//        end;
+        writeln('+ ',masToString(operand),' МДК');
         sum(operand,mdkB);
+        writeln('___________________________');
+        writeln('  ',masToString(operand),' ОСТ');
       end
       else
       begin
+        writeln('  ',masToString(operand),' ОСТ < 0, прибавляем 0 к результату');
         res[k-1]:=0;
         shift(operand);
+        writeln('  ',masToString(operand),' <- СДВИГ ');
         ShiftCount:=ShiftCount+1;
+        writeln('+ ',masToString(operand),' ПК');
         sum(operand,pkB);
+        writeln('___________________________');
+        writeln('  ',masToString(operand),' ОСТ');
       end;
       k:=k+1;
+      CRT.ReadKey();
+//      CRT.ClrScr();
   end;
   
   //всё что ниже - округляет последнее доп значение
   res[res.length-1]:=(operand[0] = 0)? 1 : 0;
   
   write((n=true)?'-':' ');
-  
-  writeln('Ответ:');
+  writeln('~~~~~~~~~~~~');
+  writeln('ОТВЕТ:');
   for i:=0 to res.Length-2 do
   begin
     write(((res.length - i)=ShiftCount)? res[i].ToString+',' : res[i].ToString)
