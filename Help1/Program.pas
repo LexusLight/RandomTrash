@@ -60,12 +60,12 @@ begin
       pkB[i-n]:=0;
     end;
   end;
-    if(pkA.length < pkB.length) then
+  if(pkA.length < pkB.length) then
   begin
     setlength(pkA,pkB.length);
     for i:=pkA.length-1 downto 2+n do
     begin
-      pkA[i+n]:=pkA[i-n];
+      pkA[i]:=pkA[i-n];
       pkA[i-n]:=0;
     end;
       
@@ -88,7 +88,7 @@ begin
 end;
 
 {
-функция переводит МОК в МОД - прибавляет единицу.
+функция переводит МОК в МДK - прибавляет единицу.
 }
 function mdk(mok:array of integer):array of integer; 
 var 
